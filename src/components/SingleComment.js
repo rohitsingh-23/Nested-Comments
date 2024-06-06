@@ -1,56 +1,75 @@
 import React, { useEffect, useState } from "react";
-import AddComment from "./AddComment";
-import { v4 as uuid } from "uuid";
+import {
+  FaLongArrowAltUp,
+  FaLongArrowAltDown,
+  FaComment,
+} from "react-icons/fa";
 
-const SingleComment = ({ item, handleVote, handleNestedAddComment }) => {
-  const [input, setInput] = useState(false);
-  const [reply, setReply] = useState([]);
+const SingleComment = ({ item, handleVote, handleAddComment }) => {
+  const [text, setText] = useState("");
+  const [reply, setReply] = useState(false);
 
-  useEffect(() => {
-    setReply([...item.reply]);
-  }, []);
-
-  const handleReply = (comment) => {
-    setReply((prev) => {
-      let temp = prev;
-      temp = [
-        ...temp,
-        {
-          id: uuid(),
-          title: comment,
-          vote: 0,
-          reply: [],
-        },
-      ];
-      return temp;
-    });
-  };
   return (
-    <div key={item.id} className="single-comment">
+    <div className="single-comment">
       <div style={{ display: "flex" }}>
-        <button onClick={() => handleVote("up", item.id)}>+</button>
-        <p>{item.vote}</p>
-        <button onClick={() => handleVote("down", item.id)}>-</button>
-        <button onClick={() => setInput((prev) => !prev)}>reply</button>
-        {input && (
-          <AddComment
-            id={item.id}
-            handleNestedAddComment={handleNestedAddComment}
-          />
+        <div className="vote-container">
+          <button
+            className="round-btn"
+            onClick={() => handleVote("up", item.id)}
+          >
+            <FaLongArrowAltUp />
+          </button>
+          <p>{item.vote}</p>
+          <button
+            className="round-btn"
+            onClick={() => handleVote("down", item.id)}
+          >
+            <FaLongArrowAltDown />
+          </button>
+        </div>
+        <button
+          className="reply-btn"
+          onClick={() =>
+            setReply((prev) => {
+              setText("");
+
+              return !prev;
+            })
+          }
+        >
+          <FaComment /> reply
+        </button>
+        {reply && (
+          <>
+            <input
+              type="text"
+              placeholder="Add new Comment..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <button
+              onClick={() => {
+                setReply((prev) => !prev);
+                setText("");
+                handleAddComment(text, item.id);
+              }}
+            >
+              Add
+            </button>
+          </>
         )}
       </div>
-      {/* {item.reply &&
-        item.reply.map((temp) => {
-          <SingleComment
-            item={temp}
-            handleVote={handleVote}
-            handleNestedAddComment={handleNestedAddComment}
-          />;
-        })} */}
-      <p>{item.title}</p>
+      <p className="comment">{item.title}</p>
       <div className="replies">
-        {reply.map((item) => {
-          return <p key={item.id}>{item.title}</p>;
+        {item.reply.map((temp) => {
+          return (
+            <SingleComment
+              key={temp.id}
+              item={temp}
+              handleVote={handleVote}
+              handleAddComment={handleAddComment}
+            />
+          );
         })}
       </div>
     </div>
