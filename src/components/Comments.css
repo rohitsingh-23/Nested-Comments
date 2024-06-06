@@ -1,0 +1,46 @@
+.post{
+    border-radius: 20px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.dummy-img{
+    /* width: 200px;
+    height: 200px; */
+    background-color: aqua;
+
+}
+
+.comments{
+    padding: 20px;
+    border: 1px solid red;
+}
+
+.single-comment{
+    border: 1px solid rgb(94, 71, 176); 
+    margin: 10px;
+    
+
+}
+
+.single-comment>div{
+    /* border: 1px solid rebeccapurple; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+}
+
+.single-comment>div *{
+    margin: 5px;
+}
+
+.single-comment button{
+    width: 50px;
+    height: 40px;
+    padding: 10px;
+}
